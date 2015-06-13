@@ -112,8 +112,7 @@
 #
 #   Default is false.
 #
-#log_stdout : true
-#log_stdout : false
+log_stdout : true
 
 # Delete old log files
 #
