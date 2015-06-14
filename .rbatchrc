@@ -121,14 +121,13 @@ log_stdout : true
 #   A log file to delete is a log file which was made by the
 #   RBatch::Log instance, and log filename format include "<date>".
 #
-#log_delete_old_log : true
-#log_delete_old_log : false
+log_delete_old_log : true
 
 # Expire Date of Log Files
 #
 #   Default is 7.
 #
-#log_delete_old_log_date : 14
+log_delete_old_log_date : 14
 
 # Log buffering
 #
