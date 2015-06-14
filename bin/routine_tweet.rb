@@ -13,15 +13,16 @@ current_data = series.first
 past_data = series.last
 
 border_list = []
-current_data.select{|key| key.include? 'border_' }.sort{|a, b| Mlborder::Util.border_number(a.first) <=> Mlborder::Util.border_number(b.first)}.each do |border, point|
-  next if point.nil?
+current_data.select{|key, value| key.include?('border_') && !value.nil? }
+            .sort{|a, b| Mlborder::Util.border_number(a.first) <=> Mlborder::Util.border_number(b.first)}.each do |border, point|
   border_list << { rank: Mlborder::Util.border_number(border), point: point, velocity: (point - past_data[border]) } unless past_data[border].nil?
 end
 
 current_time = Time.at current_data['time']
-tweet_txt = "#{current_time.strftime('%m/%d %H:%M')} #imas_ml\n"
-border_list.each do |border|
-  next unless [100,1200].include? border[:rank]
+tweet_txt = "『#{Mlborder::Util.event_name current_time}』\n#{current_time.strftime('%m/%d %H:%M')} #imas_ml\n"
+rank_list = RBatch.common_config['MLBORDER_PRIZE_RANK_LIST']
+
+border_list.select{|border| rank_list.include? border[:rank]}.each do |border|
   tweet_txt += "#{border[:rank]}位 #{Mlborder::Util.number_format border[:point]}pt/+#{Mlborder::Util.number_format border[:velocity]}\n"
 end
 tweet_txt += "\n参考:https://mlborder.herokuapp.com/"
