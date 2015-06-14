@@ -28,7 +28,7 @@ border_tweet = border_list.select{|border| rank_list.include? border[:rank]}.map
 end
 
 tweet_txt = "『#{Mlborder::Util.event_name start_time}』\n"
-tweet_txt += "日時集計:#{start_time.strftime('%d日%H:%M')}〜#{end_time.strftime('%d日%H:%M')}\n"
+tweet_txt += "日次集計:#{start_time.strftime('%d日%H:%M')}〜#{end_time.strftime('%d日%H:%M')}\n"
 tweet_txt += border_tweet.join("\n")
 
 tweet_txt += "\n参考:https://mlborder.herokuapp.com/"
