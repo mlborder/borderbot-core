@@ -23,7 +23,7 @@ tweet_txt = "『#{Mlborder::Util.event_name current_time}』\n#{current_time.str
 rank_list = RBatch.common_config['MLBORDER_PRIZE_RANK_LIST']
 
 border_list.select{|border| rank_list.include? border[:rank]}.each do |border|
-  tweet_txt += "#{border[:rank]}位 #{Mlborder::Util.number_format border[:point]}pt/+#{Mlborder::Util.number_format border[:velocity]}\n"
+  tweet_txt += "#{border[:rank]}位 #{Mlborder::Util.readable_unit border[:point]}pt/+#{Mlborder::Util.scalable_unit border[:velocity]}\n"
 end
 tweet_txt += "\n参考:https://mlborder.herokuapp.com/"
 
