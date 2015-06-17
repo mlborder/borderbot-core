@@ -24,7 +24,7 @@ end
 
 rank_list = RBatch.common_config['MLBORDER_PRIZE_RANK_LIST']
 border_tweet = border_list.select{|border| rank_list.include? border[:rank]}.map do |border|
-  "#{border[:rank]}位 #{Mlborder::Util.readable_unit border[:point]}pt/日速#{Mlborder::Util.scalable_unit border[:velocity]}/時速#{Mlborder::Util.scalable_unit (border[:velocity] / hours).to_i}"
+  "#{border[:rank]}位 #{Mlborder::Util.readable_unit border[:point]}pt/日速#{Mlborder::Util.readable_unit border[:velocity]}/時速#{Mlborder::Util.readable_unit (border[:velocity] / hours).to_i}"
 end
 
 tweet_txt = "『#{Mlborder::Util.event_name start_time}』\n"
