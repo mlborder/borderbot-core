@@ -42,7 +42,7 @@ module Mlborder
 
       ret = @influxdb_cli.query "SELECT * FROM #{series_name} WHERE time < '#{str_time_to}' AND time > '#{str_time_from}'"
 
-      index = nil
+      index = -1
       latest_time = ret[series_name].first['time']
       ret[series_name].each_with_index do |data, i|
         if (latest_time - data['time']) >= duration
