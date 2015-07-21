@@ -19,7 +19,7 @@ current_data.select{|key, value| key.include?('border_') && !value.nil? }
 end
 
 current_time = Time.at current_data['time']
-tweet_txt = "『#{Mlborder::Util.event_name current_time}』\n#{current_time.strftime('%m/%d %H:%M')} #imas_ml\n"
+tweet_txt = "『#{Mlborder::Util.event_at(current_time)['name']}』\n#{current_time.strftime('%m/%d %H:%M')} #imas_ml\n"
 rank_list = RBatch.common_config['MLBORDER_PRIZE_RANK_LIST']
 
 border_list.select{|border| rank_list.include? border[:rank]}.each do |border|

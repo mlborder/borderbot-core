@@ -40,16 +40,14 @@ module Mlborder
       after_digit <= 0 ? "#{num.to_i}#{unit}" : "#{format("%.#{after_digit}f", num)}#{unit}"
     end
 
-    def self.event_name(time)
-      name = nil
-      open(event_json_cache_path, 'r') do |f|
+    def self.event_at(time)
+      event = open(event_json_cache_path, 'r') do |f|
         event = JSON.parse(f.read.force_encoding('UTF-8'))
         start_time = Time.parse(event['started_at'])
         end_time = Time.parse(event['ended_at'])
         raise unless (start_time..end_time).cover?(time)
-        name = event['name']
+        event
       end
-      name
     rescue
       update_event_json
     end
@@ -61,10 +59,12 @@ module Mlborder
 
       body = open(uri).read
       open(event_json_cache_path, 'w') { |f| f.puts body }
-      event = JSON.parse(body)
-      event['name']
+      JSON.parse(body)
     rescue => e
-      '現在開催中のイベント'
+      { 'name' => '現在開催中のイベント',
+        'started_at' => nil,
+        'ended_at' => nil
+      }
     end
 
     def self.event_json_cache_path
