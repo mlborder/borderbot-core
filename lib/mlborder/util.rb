@@ -39,36 +39,5 @@ module Mlborder
       after_digit = num == num.to_i ? 0 : digit_limit - num.to_i.to_s.length
       after_digit <= 0 ? "#{num.to_i}#{unit}" : "#{format("%.#{after_digit}f", num)}#{unit}"
     end
-
-    def self.event_at(time)
-      event = open(event_json_cache_path, 'r') do |f|
-        event = JSON.parse(f.read.force_encoding('UTF-8'))
-        start_time = Time.parse(event['started_at'])
-        end_time = Time.parse(event['ended_at'])
-        raise unless (start_time..end_time).cover?(time)
-        event
-      end
-    rescue
-      update_event_json
-    end
-
-    private
-    def self.update_event_json
-      uri = RBatch.common_config['MLBORDER_EVENT_SOURCE']
-      puts "Loading event_info from #{uri} and updating..."
-
-      body = open(uri).read
-      open(event_json_cache_path, 'w') { |f| f.puts body }
-      JSON.parse(body)
-    rescue => e
-      { 'name' => '現在開催中のイベント',
-        'started_at' => nil,
-        'ended_at' => nil
-      }
-    end
-
-    def self.event_json_cache_path
-      "#{ENV['PWD']}/tmp/event_info.cache"
-    end
   end
 end

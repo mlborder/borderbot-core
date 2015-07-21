@@ -19,18 +19,11 @@ current_data.select{|key, value| key.include?('border_') && !value.nil? }
 end
 
 current_time = Time.at current_data['time']
-current_event = Mlborder::Util.event_at(current_time)
-progress = ''
-unless current_event['started_at'].nil?
-  start_time = Time.parse current_event['started_at']
-  end_time = Time.parse current_event['ended_at']
+current_event = Mlborder::Event.explore_by_time(current_time)
+progress = current_event.progress_at(current_time)
+str_progress = progress.nil? ? '' : "(#{(progress * 100).round(1)}%)"
 
-  all_time = end_time.to_i - start_time.to_i
-  past_time = current_time.to_i - start_time.to_i
-  progress = "(#{(past_time.to_f / all_time * 100).round(1)}%)"
-end
-
-tweet_txt = "『#{current_event['name']}』\n#{current_time.strftime('%m/%d %H:%M')}#{progress} #imas_ml\n"
+tweet_txt = "『#{current_event.name}』\n#{current_time.strftime('%m/%d %H:%M')}#{str_progress} #imas_ml\n"
 rank_list = RBatch.common_config['MLBORDER_PRIZE_RANK_LIST']
 
 border_list.select{|border| rank_list.include? border[:rank]}.each do |border|
