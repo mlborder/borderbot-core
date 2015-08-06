@@ -21,7 +21,13 @@ end
 current_time = Time.at current_data['time']
 current_event = Mlborder::Event.explore_by_time(current_time)
 progress = current_event.progress_at(current_time)
-str_progress = progress.nil? ? '' : "(#{(progress * 100).round(1)}%)"
+str_progress = if progress.nil?
+                 ''
+               elsif progress > 1.0
+                 '【最終結果】'
+               else
+                 "(#{(progress * 100).round(1)}%)"
+               end
 
 tweet_txt = "『#{current_event.name}』\n#{current_time.strftime('%m/%d %H:%M')}#{str_progress} #imas_ml\n"
 rank_list = RBatch.common_config['MLBORDER_PRIZE_RANK_LIST']
