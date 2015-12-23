@@ -9,7 +9,7 @@ module Mlborder
     end
 
     def self.readable_unit(number)
-      digit = number.to_s.length
+      digit = number.to_i.to_s.length
       digit_limit = 4
       num, unit = if digit < 10_000.to_s.length
                     [number, '']

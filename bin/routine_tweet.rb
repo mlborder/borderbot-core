@@ -18,7 +18,7 @@ current_data.select{|key, value| key.include?('border_') && !value.nil? }
   border_list << { rank: Mlborder::Util.border_number(border), point: point, velocity: (point - past_data[border]) } unless past_data[border].nil?
 end
 
-current_time = Time.at current_data['time']
+current_time = Time.parse(current_data['time']).localtime
 current_event = Mlborder::Event.explore_by_time(current_time)
 progress = current_event.progress_at(current_time)
 str_progress = if progress.nil?

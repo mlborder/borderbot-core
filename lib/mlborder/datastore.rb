@@ -36,21 +36,20 @@ module Mlborder
     end
 
     def fetch_data(series_name, target_time, duration = 3600)
-      time_from = target_time - duration * 1.2
-      str_time_to = target_time.utc.strftime("%Y-%m-%d %H:%M:01")
-      str_time_from = time_from.utc.strftime("%Y-%m-%d %H:%M:%S")
-
-      ret = @influxdb_cli.query "SELECT * FROM #{series_name} WHERE time < '#{str_time_to}' AND time > '#{str_time_from}'"
+      str_time_to = target_time.to_i
+      str_time_from = str_time_to - duration - 300
+      ret = @influxdb_cli.query "SELECT * FROM \"#{series_name}\" WHERE time <= #{str_time_to}s AND time >= #{str_time_from}s"
+      values = ret.first['values'].reverse
 
       index = -1
-      latest_time = ret[series_name].first['time']
-      ret[series_name].each_with_index do |data, i|
-        if (latest_time - data['time']) >= duration
+      latest_time = Time.parse(values.first['time'])
+      values.each_with_index do |data, i|
+        if (latest_time.to_i - Time.parse(data['time']).to_i) >= duration
           index = i
           break
         end
       end
-      ret[series_name][0..index]
+      values[0..index]
     end
 
     private
