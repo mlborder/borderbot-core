@@ -31,6 +31,10 @@ module Mlborder
       end
     end
 
+    def search_user(user_id)
+      @bot.user user_id unless debug_mode?
+    end
+
     def debug_mode?
       @debug_mode
     end

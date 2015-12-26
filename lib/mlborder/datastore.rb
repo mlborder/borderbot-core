@@ -52,6 +52,11 @@ module Mlborder
       values[0..index]
     end
 
+    def fetch_just_recent_data(series_name)
+      res = @influxdb_cli.query "SELECT * FROM \"#{series_name}\" ORDER BY time DESC LIMIT 1"
+      res.first['values'].first
+    end
+
     private
     def parse(packet)
       meta_data = packet.pop
