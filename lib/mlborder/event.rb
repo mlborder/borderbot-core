@@ -1,8 +1,11 @@
 module Mlborder
   class Event
-    attr_reader :name, :start_time, :end_time
+    attr_reader :id, :url, :series_name, :name, :start_time, :end_time
 
     def initialize(event_hash)
+      @id = event_hash['id']
+      @url = event_hash['url']
+      @series_name = event_hash['series_name']
       @name = event_hash['name']
       @start_time = Time.parse(event_hash['started_at']) unless event_hash['started_at'].nil?
       @end_time = Time.parse(event_hash['ended_at']) unless event_hash['ended_at'].nil?

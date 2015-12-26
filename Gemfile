@@ -11,3 +11,7 @@ end
 group :bot do
   gem 'twitter'
 end
+
+group :notifier do
+  gem 'pg'
+end
