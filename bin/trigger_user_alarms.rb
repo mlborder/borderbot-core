@@ -11,7 +11,7 @@ event = Mlborder::Event.explore_by_time(current_time)
 
 if ((event.start_time)..(event.end_time)).cover? current_time
   alarms = postgres.cli.exec \
-    "SELECT * FROM alarms INNER JOIN users ON users.id = alarms.user_id WHERE alarms.event_id = #{event.id} AND alarms.status = 1"
+    "SELECT * FROM users INNER JOIN alarms ON users.id = alarms.user_id WHERE alarms.event_id = #{event.id} AND alarms.status = 1"
 
   if alarms.any?
     recent = influxdb.fetch_just_recent_data(event.series_name)
