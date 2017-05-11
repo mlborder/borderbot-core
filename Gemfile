@@ -10,6 +10,7 @@ end
 
 group :bot do
   gem 'twitter'
+  gem 'mastodon-api'
 end
 
 group :notifier do

@@ -8,12 +8,17 @@ module Mlborder
       return if debug_mode
 
       require 'twitter'
+      require 'mastodon'
 
       @bot = Twitter::REST::Client.new(
         consumer_key:        RBatch.common_config['TWITTER_CONSUMER_KEY'],
         consumer_secret:     RBatch.common_config['TWITTER_CONSUMER_SECRET'],
         access_token:        RBatch.common_config['TWITTER_ACCESS_TOKEN'],
         access_token_secret: RBatch.common_config['TWITTER_ACCESS_TOKEN_SECRET']
+      )
+      @mastodon_cli = Mastodon::REST::Client.new(
+        base_url:           RBatch.common_config['MASTODON_BASE_URL'],
+        bearer_token:       'd732346e952bf94b61ded850f27789c4efdfd3065461c0f9949fc8dd4efee27a'#RBatch.common_config['MASTODON_BEARER_TOKEN']
       )
     end
 
@@ -28,6 +33,16 @@ module Mlborder
         else
           @bot.update tweet_str
         end
+      end
+    end
+
+    def toot(toot_str, in_reply_to_id = nil)
+      return if debug_mode?
+
+      unless in_reply_to_id.nil?
+        @mastodon_cli.create_status toot_str, in_reply_to_id
+      else
+        @mastodon_cli.create_status toot_str
       end
     end
 
