@@ -18,7 +18,7 @@ module Mlborder
       )
       @mastodon_cli = Mastodon::REST::Client.new(
         base_url:           RBatch.common_config['MASTODON_BASE_URL'],
-        bearer_token:       'd732346e952bf94b61ded850f27789c4efdfd3065461c0f9949fc8dd4efee27a'#RBatch.common_config['MASTODON_BEARER_TOKEN']
+        bearer_token:       RBatch.common_config['MASTODON_BEARER_TOKEN']
       )
     end
 
