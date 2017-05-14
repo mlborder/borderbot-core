@@ -65,7 +65,7 @@ module Mlborder
 
       updated_at = Time.strptime("%s %s"%[str_date, str_time], "%m/%d %H:%M")
 
-      ret = { time: updated_at.to_i }
+      ret = { timestamp: updated_at.to_i }
       packet.each do |line|
         rank, point = line.split(':')
         ret["border_#{rank}".to_sym] = point.gsub(',', '').to_i
