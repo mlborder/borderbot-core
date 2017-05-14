@@ -29,12 +29,13 @@ str_progress = if progress.nil?
                  "(#{(progress * 100).round(1)}%)"
                end
 
-tweet_txt = "『#{current_event.name}』\n#{current_time.strftime('%m/%d %H:%M')}#{str_progress} #imas_ml\n"
+tweet_txt = "『#{current_event.name}』\n#{current_time.strftime('%m/%d %H:%M')}#{str_progress}\n"
 rank_list = RBatch.common_config['MLBORDER_PRIZE_RANK_LIST']
 
 border_list.select{|border| rank_list.include? border[:rank]}.each do |border|
-  tweet_txt += "#{border[:rank]}位 #{Mlborder::Util.readable_unit border[:point]}/+#{Mlborder::Util.readable_unit border[:velocity]}\n"
+  tweet_txt += "#{border[:rank]}位#{Mlborder::Util.readable_unit border[:point]}/+#{Mlborder::Util.readable_unit border[:velocity]}\n"
 end
-tweet_txt += "\n参考:https://mlborder.herokuapp.com/"
+tweet_txt += "#{current_event.url}"
 
 bot.tweet tweet_txt
+bot.toot tweet_txt
